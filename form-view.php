@@ -31,7 +31,7 @@
         <div class="form-row">
             <div class="form-group col-md-6">
                 <label for="email">E-mail:</label>
-                <input type="email" id="email" name="email" class="form-control"/>
+                <input type="email" id="email" name="email" class="form-control" required/>
             </div>
             <div></div>
         </div>
@@ -42,21 +42,21 @@
             <div class="form-row">
                 <div class="form-group col-md-6">
                     <label for="street">Street:</label>
-                    <input type="text" name="street" id="street" class="form-control">
+                    <input type="text" name="street" id="street" class="form-control" required>
                 </div>
                 <div class="form-group col-md-6">
                     <label for="streetnumber">Street number:</label>
-                    <input type="text" id="streetnumber" name="streetnumber" class="form-control">
+                    <input type="number" id="streetnumber" name="streetnumber" class="form-control" required>
                 </div>
             </div>
             <div class="form-row">
                 <div class="form-group col-md-6">
                     <label for="city">City:</label>
-                    <input type="text" id="city" name="city" class="form-control">
+                    <input type="text" id="city" name="city" class="form-control" >
                 </div>
                 <div class="form-group col-md-6">
                     <label for="zipcode">Zipcode</label>
-                    <input type="text" id="zipcode" name="zipcode" class="form-control">
+                    <input type="number" id="zipcode" name="zipcode" class="form-control" required>
                 </div>
             </div>
         </fieldset>
@@ -66,16 +66,43 @@
             <?php foreach ($products as $i => $product): ?>
                 <label>
 					<?php // <?= is equal to <?php echo ?>
-                    <input type="checkbox" value="1" name="products[<?php echo $i ?>]"/> <?php echo $product['name'] ?> -
+                    <input type="checkbox" value="<?php echo $i?>" name="products[<?php echo $i ?>]" price="<?php $product['price'] ?>"/> <?php echo $product['name'] ?> -
                     &euro; <?= number_format($product['price'], 2) ?></label><br />
             <?php endforeach; ?>
         </fieldset>
 
-        <button type="submit" class="btn btn-primary">Order!</button>
+        <button type="submit" name="submit" class="btn btn-primary">Order!</button>
     </form>
 
-    <footer>You already ordered <strong>&euro; <?php echo $totalValue ?></strong> in food and drinks.</footer>
+    <h1 class="text-center">Order Informarion</h1>
+    <div class="container d-flex justify-content-around">
+        <div id="deliveryAdresInfo">
+        <h3>delivery adres:</h3>
+            <ul>
+                <?php
+                    echo deliveryInfo();
+                ?>
+            </ul>
+        </div>
+        <div id="orderInformation">
+            <h3>order</h5>
+            <ul>
+                <?php 
+                    for ($i = 0; $i < count(handleForm()); $i++){
+                        echo "<li>".$products[handleForm()[$i]]['name']. " - €".$products[handleForm()[$i]]['price']."</li>";
+                    }
+                ?>
+            </ul>
+        </div>
+    </div>
+
+    <footer>You already ordered <strong>&euro; 
+        <?php 
+        echo showPrice();
+        ?>
+        </strong> in food and drinks.</footer>
 </div>
+
 
 <style>
     footer {
