@@ -13,6 +13,9 @@
 </head>
 <body>
 <div class="container">
+<div class=" float-end">
+        <button type="button" id="newOrder"><a href="<?php $_SERVER['PHP_SELF']; ?>">New Order</a></button>
+    </div>
     <h1>Place your order</h1>
     <?php // Navigation for when you need it ?>
     <?php /*
@@ -27,11 +30,11 @@
         </ul>
     </nav>
     */ ?>
-    <form method="post">
+    <form method="post" action="index.php">
         <div class="form-row">
             <div class="form-group col-md-6">
                 <label for="email">E-mail:</label>
-                <input type="email" id="email" name="email" class="form-control" required/>
+                <input type="email" id="email" name="email" class="form-control" />
             </div>
             <div></div>
         </div>
@@ -42,11 +45,11 @@
             <div class="form-row">
                 <div class="form-group col-md-6">
                     <label for="street">Street:</label>
-                    <input type="text" name="street" id="street" class="form-control" required>
+                    <input type="text" name="street" id="street" class="form-control" >
                 </div>
                 <div class="form-group col-md-6">
                     <label for="streetnumber">Street number:</label>
-                    <input type="number" id="streetnumber" name="streetnumber" class="form-control" required>
+                    <input type="number" id="streetnumber" name="streetnumber" class="form-control" >
                 </div>
             </div>
             <div class="form-row">
@@ -56,7 +59,7 @@
                 </div>
                 <div class="form-group col-md-6">
                     <label for="zipcode">Zipcode</label>
-                    <input type="number" id="zipcode" name="zipcode" class="form-control" required>
+                    <input type="number" id="zipcode" name="zipcode" class="form-control" >
                 </div>
             </div>
         </fieldset>
@@ -88,9 +91,11 @@
             <h3>order</h5>
             <ul>
                 <?php 
-                    for ($i = 0; $i < count(handleForm()); $i++){
-                        echo "<li>".$products[handleForm()[$i]]['name']. " - €".$products[handleForm()[$i]]['price']."</li>";
+                if(isset($magic)){
+                    for ($i = 0; $i < count($magic); $i++){
+                        echo "<li>".$products[$magic[$i]]['name']. " - €".$products[$magic[$i]]['price']."</li>";
                     }
+                }
                 ?>
             </ul>
         </div>

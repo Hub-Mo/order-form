@@ -21,6 +21,7 @@ function whatIsHappening() {
     var_dump($_SESSION);
 }
 
+
 // TODO: provide some products (you may overwrite the example)
 $products = [
     ['name' => 'Pizza', 'price' => 10.50],
@@ -31,6 +32,7 @@ $products = [
 
 // form variables ///
 function deliveryInfo() {
+    $email = $street = $streetnumber = $city = $zipcode = "";
     if ($_POST){
         $email = $_POST['email'];
         $street = $_POST['street'];
@@ -52,48 +54,80 @@ function deliveryInfo() {
 function showPrice(){
     $price = 0;
     global $products;
-    for ($i = 0; $i < count(handleForm()); $i++){
-        $price = $price + $products[handleForm()[$i]]['price'];
+    if(isset($magic)){
+
+        for ($i = 0; $i < count($magic); $i++){
+            $price += $products[$magic[$i]]['price'];
+    }
 } 
 return $price;
 }
 function validate()
 {
     // TODO: This function will send a list of invalid fields back
-    return [];
+    $error = [];
+
+    if (empty($_POST['email'])){ $error['email'] = "enter your Email adress";};
+    if (empty($_POST['street'])){ $error['street'] = "enter your street ";};
+    if (empty($_POST['streetnumber'])){ $error['streetnumber'] = "enter your street number ";};
+    if (empty($_POST['city'])){ $error['city'] = "enter your city ";};
+    if (empty($_POST['zipcode'])){ $error['zipcode'] = "enter your zipcode ";};
+    if (empty($_POST['products'])){ $error['products'] = "choose atleast one product";};
+
+    if (!empty($error)){
+        return $error;
+    }
+    
 }
 function handleForm()
 {
-
     $chosen = [];
-    if (!$_POST){
+    $invalidFields = validate();
+    if (!filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)){
+        echo "<div class='alert alert-warning'> enter a valid email </div>";
+    }
+    if (!ctype_digit($_POST['zipcode'])){
+        echo "<div class='alert alert-warning'> enter a valid zipcode </div>";
+    }
+    if (!ctype_digit($_POST['streetnumber'])){
+        echo "<div class='alert alert-warning'> enter a valid zipcode </div>";
+    }
+    if (!isset($_POST['products'])) {
+        echo "<div class='alert alert-danger'> choose atleast one item</div>";
+    }
+
+
+    if (!empty($invalifFields)){
         // TODO: handle errors
-        return [];
+        foreach($invalidFields as $index=>$invalidFields){
+            echo "<div class='alert alert-warning'".$invalidFields."</div>";
+        }
     }
     else{
-        foreach($_POST['products'] as $item){
-            array_push($chosen, $item);
+
+        if(!isset($_POST['products'])){
+            $food = [];
+            return $food;
+        }else{
+
+            $food = $_POST['products'];
+                foreach($food as $item){
+                array_push($chosen, $item);
+            }
+            $index = array_map('intval', $chosen);
+            return $index;
         }
-        $index = array_map('intval', $chosen);
-        return $index;
     }
 
-        // Validation (step 2)
-        // $invalidFields = validate();
-            // if (!$_POST) {
-
-            //     echo 'input fields are empty';
-            //     return [];
-            // } else {
-            //     return $index;
-            // }
-        };
+    
+};
 
 
 // TODO: replace this if by an actual check
-if (isset($_POST["submit"])){
-        handleForm();
+if (isset($_POST['submit'])){
+        $magic = handleForm();
 }
+
 
 
 require 'form-view.php';
