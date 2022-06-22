@@ -32,7 +32,6 @@ $products = [
 
 // form variables ///
 function deliveryInfo() {
-    $email = $street = $streetnumber = $city = $zipcode = "";
     if ($_POST){
         $email = $_POST['email'];
         $street = $_POST['street'];
@@ -51,17 +50,17 @@ function deliveryInfo() {
 }
 
 // incrementing prices
-function showPrice(){
-    $price = 0;
-    global $products;
-    if(isset($magic)){
+// function showPrice(){
+//     $price = 0;
+//     global $products;
+//     if(isset($magic)){
 
-        for ($i = 0; $i < count($magic); $i++){
-            $price += $products[$magic[$i]]['price'];
-    }
-} 
-return $price;
-}
+//         for ($i = 0; $i < count($magic); $i++){
+//             $price = $price + $products[$magic[$i]]['price'];
+//     }
+//     return $price;
+// } 
+// }
 function validate()
 {
     // TODO: This function will send a list of invalid fields back
@@ -104,12 +103,11 @@ function handleForm()
         }
     }
     else{
+        $food = [];
 
         if(!isset($_POST['products'])){
-            $food = [];
             return $food;
         }else{
-
             $food = $_POST['products'];
                 foreach($food as $item){
                 array_push($chosen, $item);

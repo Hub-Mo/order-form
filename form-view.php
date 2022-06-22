@@ -76,7 +76,9 @@
 
         <button type="submit" name="submit" class="btn btn-primary">Order!</button>
     </form>
-
+    <?php if(isset($magic)){
+        echo "<div class='alert alert-success'> your order has been received </div>";
+    } ?>
     <h1 class="text-center">Order Informarion</h1>
     <div class="container d-flex justify-content-around">
         <div id="deliveryAdresInfo">
@@ -103,7 +105,13 @@
 
     <footer>You already ordered <strong>&euro; 
         <?php 
-        echo showPrice();
+            $price = 0;
+            if(isset($magic)){
+                for ($i = 0; $i < count($magic); $i++){
+                    $price = $price + $products[$magic[$i]]['price'];
+            }
+            echo $price;
+        }
         ?>
         </strong> in food and drinks.</footer>
 </div>
